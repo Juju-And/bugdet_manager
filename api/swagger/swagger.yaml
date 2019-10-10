@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: >-
-    This is a sample server Petstore server.  You can find out more about
+    This is a sample server BudgetManager server.  You can find out more about
     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net,
     #swagger](http://swagger.io/irc/).      For this sample, you can use the api
     key `special-key` to test the authorization     filters.
@@ -48,38 +48,7 @@ paths:
       responses:
         '405':
           description: Invalid input
-      security:
-        - budgetmanager_auth:
-            - 'write:products'
-            - 'read:products'
-    put:
-      tags:
-        - product
-      summary: Update an existing product
-      description: ''
-      operationId: updateProduct
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: Product object that needs to be updates in the expenses list
-          required: true
-          schema:
-            $ref: '#/definitions/Product'
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Product not found
-        '405':
-          description: Validation exception
-      security:
-        - budgetmanager_auth:
-            - 'write:products'
-            - 'read:products'
+
     get:
       tags:
         - product
@@ -104,10 +73,6 @@ paths:
               $ref: '#/definitions/Product'
         '400':
           description: No products found
-      security:
-        - budgetmanager_auth:
-            - 'write:products'
-            - 'read:products'
 
   '/products/{productId}':
     get:
@@ -134,9 +99,7 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Product not found
-      security:
-        - api_key: []
-    post:
+    put:
       tags:
         - product
       summary: Updates a product in the manager with form data
@@ -166,10 +129,6 @@ paths:
       responses:
         '405':
           description: Invalid input
-      security:
-        - budgetmanager_auth:
-            - 'write:products'
-            - 'read:products'
     delete:
       tags:
         - product
@@ -179,10 +138,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: api_key
-          in: header
-          required: false
-          type: string
         - name: productId
           in: path
           description: Product id to delete
@@ -193,11 +148,7 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Pet not found
-      security:
-        - budgetmanager_auth:
-            - 'write:products'
-            - 'read:products'
+          description: Product not found
   /expenses:
     get:
       tags:
@@ -229,10 +180,6 @@ paths:
               $ref: '#/definitions/Product'
         '400':
           description: Invalid sort value
-      security:
-        - budgetmanager_auth:
-            - 'write:products'
-            - 'read:products'
     post:
       tags:
         - expenses
@@ -259,7 +206,7 @@ paths:
   '/expenses/{expenseId}':
     get:
       tags:
-        - store
+        - expenses
       summary: Find expense by ID
       description: >-
         For valid response try integer IDs with value >= 1 and <= 10.
@@ -287,7 +234,7 @@ paths:
           description: Expense not found
     delete:
       tags:
-        - store
+        - expenses
       summary: Delete expense by ID
       description: >-
         For valid response try integer IDs with positive integer value.
@@ -308,19 +255,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Order not found
-
-securityDefinitions:
-  budgetmanager_auth:
-    type: oauth2
-    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-    flow: implicit
-    scopes:
-      'write:products': modify products in your account
-      'read:products': read your products
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
 definitions:
   Expenses:
     type: object
@@ -328,108 +262,37 @@ definitions:
       id:
         type: integer
         format: int64
-      petId:
-        type: integer
-        format: int64
-      quantity:
-        type: integer
-        format: int32
-      shipDate:
-        type: string
-        format: date-time
-      status:
-        type: string
-        description: Order Status
-        enum:
-          - placed
-          - approved
-          - delivered
-      complete:
-        type: boolean
-        default: false
-    xml:
-      name: Order
-  Category:
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int64
-      name:
-        type: string
-    xml:
-      name: Category
-  User:
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int64
-      username:
-        type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-      email:
-        type: string
-      password:
-        type: string
-      phone:
-        type: string
-      userStatus:
-        type: integer
-        format: int32
-        description: User Status
-    xml:
-      name: User
-  Tag:
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int64
-      name:
-        type: string
-    xml:
-      name: Tag
+      products:
+        type: array
+        items:
+          type: object
+          properties:
+            productId:
+              type: integer
+              format: int64
+            name:
+              type: string
+              example: shampoo
+            price:
+              type: integer
+              format: int32
   Product:
     type: object
     required:
       - name
-      - photoUrls
+      - price
     properties:
       id:
         type: integer
         format: int64
       category:
-        $ref: '#/definitions/Category'
+        $ref: '#/definitions/Product'
       name:
         type: string
-        example: doggie
-      photoUrls:
-        type: array
-        xml:
-          name: photoUrl
-          wrapped: true
-        items:
-          type: string
-      tags:
-        type: array
-        xml:
-          name: tag
-          wrapped: true
-        items:
-          $ref: '#/definitions/Tag'
-      status:
-        type: string
-        description: pet status in the store
-        enum:
-          - available
-          - pending
-          - sold
-    xml:
-      name: Pet
+        example: shampoo
+      price:
+        type: integer
+        format: int32
   ApiResponse:
     type: object
     properties:
