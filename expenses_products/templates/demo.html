@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check database</title>
+</head>
+<body>
+
+    EXPENSES
+    <ul>
+        {% for expense in expenses %}
+            <li> {{ expense.id}} , {{ expense.date_added }}, {{expense.products}} </li>
+        {% endfor %}
+    </ul>
+    <br><br>
+    PRODUCTS
+        <ul>
+        {% for product in products %}
+            <li> {{ product.name}} , {{ product.price }} </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

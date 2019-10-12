@@ -259,9 +259,6 @@ definitions:
   Expenses:
     type: object
     properties:
-      id:
-        type: integer
-        format: int64
       products:
         type: array
         items:
@@ -282,9 +279,6 @@ definitions:
       - name
       - price
     properties:
-      id:
-        type: integer
-        format: int64
       category:
         $ref: '#/definitions/Product'
       name:
