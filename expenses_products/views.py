@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from expenses_products.models import Product, Expenses
+import json
+from expenses_products.models import Product, Expenses, ExpenseProduct
 
 
 # Create your views here.
@@ -27,15 +28,15 @@ def create_db(request):
 
 
 def show_db(request):
-    expenses = Expenses.objects.all()
-    products = Product.objects.all()
-
+    expenses = list(Expenses.objects.all().values())
     for expense in expenses:
-        print(expense.products.all())
+        products = ExpenseProduct.objects.filter(expense=expense['id'])
+        expense['products'] = []
+        list_of_products = list(products.values())
+        for product in list_of_products:
+            del product['expense_id']
+            product_name = Product.objects.get(id=product['product_id'])
+            product.update({'name':product_name.name})
+            expense['products'].append(product)
 
-    context = {
-        'expenses': expenses,
-        'products': products,
-
-    }
-    return render(request, 'demo.html', context)
+    return JsonResponse(expenses, safe=False)
