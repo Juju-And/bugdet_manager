@@ -4,6 +4,9 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 import json
 from expenses_products.models import Product, Expenses, ExpenseProduct
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render, redirect
+
 
 
 # Create your views here.
@@ -46,18 +49,23 @@ class ShowProducts(View):
         products = list(Product.objects.all().values())
         return JsonResponse(products, safe=False)
 
-    def post(self, request):
-        pass
+    # def post(self, request, name, price):
+    #     product = Product.objects.create(name=name, price=price)
+    #     return redirect('/products')
 
 
 class ProductId(View):
     def get(self, request, product_id):
-        product = Product.objects.get(id=product_id)
-        product_data = {
-            'name': product.name,
-            'price': product.price
-        }
-        return JsonResponse(product_data, safe=False)
+        try:
+            product = Product.objects.get(id=product_id)
+            product_data = {
+                'name': product.name,
+                'price': product.price
+            }
+            response = JsonResponse(product_data, safe=False)
+        except ObjectDoesNotExist:
+            response = JsonResponse({'Message': 'Invalid ID supplied'})
+        return response
 
     def put(self):
         pass
@@ -87,20 +95,25 @@ class ShowExpenses(View):
 
 class ExpenseId(View):
     def get(self, request, expense_id):
-        expense = Expenses.objects.get(id=expense_id)
-        products = ExpenseProduct.objects.filter(expense=expense_id)
-        # print(products)
-        list_of_products = []
-        for product in products:
-            list_of_products.append(product.product.name)
 
-        expense_data = {
-            'id': expense.id,
-            'date_added': expense.date_added,
-            'products': list_of_products
-        }
+        try:
+            expense = Expenses.objects.get(id=expense_id)
+            products = ExpenseProduct.objects.filter(expense=expense_id)
+            # print(products)
+            list_of_products = []
+            for product in products:
+                list_of_products.append(product.product.name)
 
-        return JsonResponse(expense_data, safe=False)
+            expense_data = {
+                'id': expense.id,
+                'date_added': expense.date_added,
+                'products': list_of_products
+            }
+            response = JsonResponse(expense_data, safe=False)
+        except ObjectDoesNotExist:
+            response = JsonResponse({'Message': 'Invalid ID supplied'})
+
+        return response
 
         # def put(self):
         #     pass
