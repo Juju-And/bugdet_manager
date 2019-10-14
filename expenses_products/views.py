@@ -8,7 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 
 
-
 # Create your views here.
 
 
@@ -118,5 +117,13 @@ class ExpenseId(View):
         # def put(self):
         #     pass
         #
-        # def delete(self):
-        #     pass
+
+    def delete(self, expense_id):
+        try:
+            expense = Expenses.objects.get(id=expense_id)
+            expense.delete()
+            response = JsonResponse({'Message': 'Expense deleted'})
+        except ObjectDoesNotExist:
+            response = JsonResponse({'Message': 'Invalid ID supplied'})
+
+        return response
