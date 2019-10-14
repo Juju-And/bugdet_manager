@@ -16,11 +16,16 @@ Including another URLconf
 from django.urls import re_path, path
 from django.conf.urls import url
 from django.contrib import admin
-from expenses_products.views import create_db, show_db
+from expenses_products.views import create_db, show_db, ShowProducts, ProductId, ShowExpenses, ExpenseId
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('create/', create_db),
     re_path('show/', show_db),
+    re_path(r'^products/(?P<product_id>(\d)+)$', ProductId.as_view()),
+    re_path('products/', ShowProducts.as_view()),
+    re_path(r'^expenses/(?P<expense_id>(\d)+)$', ExpenseId.as_view()),
+    re_path('expenses/', ShowExpenses.as_view()),
+
 ]

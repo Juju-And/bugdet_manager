@@ -71,8 +71,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Product'
-        '400':
-          description: No products found
 
   '/products/{productId}':
     get:
