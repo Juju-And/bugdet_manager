@@ -44,13 +44,18 @@ def show_db(request):
 
 
 class ShowProducts(View):
+    @csrf_exempt
     def get(self, request):
         products = list(Product.objects.all().values())
         return JsonResponse(products, safe=False)
 
-    # def post(self, request, name, price):
-    #     product = Product.objects.create(name=name, price=price)
-    #     return redirect('/products')
+    @csrf_exempt
+    def post(self, request):
+        data = json.loads(request.body)
+        name = data['name']
+        price = data['price']
+        product = Product.objects.create(name=name, price=price)
+        return JsonResponse({"Message": "{} was added".format(product)})
 
 
 class ProductId(View):
