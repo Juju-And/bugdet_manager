@@ -1,6 +1,7 @@
-console.log("DUPA");
+console.log("moja DUPA");
 
 $('#content').text("dupa")
+
 
 //$.ajax({
 //    type: 'GET',
