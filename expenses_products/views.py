@@ -28,6 +28,11 @@ def create_db(request):
     expense2.save()
 
 
+class MainPage(View):
+    def get(self, request):
+        return render(request, 'main.html')
+
+
 def show_db(request):
     expenses = list(Expenses.objects.all().values())
     for expense in expenses:
