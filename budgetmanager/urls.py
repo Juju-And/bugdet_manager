@@ -28,6 +28,6 @@ urlpatterns = [
     re_path('products/', ShowProducts.as_view()),
     re_path(r'^expenses/(?P<expense_id>(\d)+)$', ExpenseId.as_view()),
     re_path('expenses/', ShowExpenses.as_view()),
-    re_path('', MainPage.as_view()),
+    path('', MainPage.as_view()),
 
 ]

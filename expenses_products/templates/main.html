@@ -6,12 +6,18 @@
 
 <body>
     <h1>Budget manager</h1>
-    <ul>
-        <li>Pokaż wszystkie produkty</li>
-        <li>Pokaż wszystkie wydatki</li>
-    </ul>
-    <div id="content"></div>
+    <ul style="list-style-type:none;">
+        <li id="show-all-products"><h2>Pokaż wszystkie produkty</h2></li>
 
+             <ul id="list-of-products">
+            <!--Load list of products here-->
+            </ul>
+
+        <li id="show-all-expenses"><h2>Pokaż wszystkie wydatki</h2></li>
+            <ul id="list-of-expenses">
+            <!--Load list of expenses here-->
+            </ul>
+    </ul>
     {% load static %}
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
