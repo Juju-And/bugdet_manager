@@ -8,8 +8,9 @@ function insertContentProducts(products) {
     ctnProductsList.empty()
     for(var i = 0 ; i < products.length; i++) {
         var li = $('<li data-id=' + products[i].id + '>').text('Nazwa: ' + products[i].name + ", Cena: " + products[i].price);
-        var delete_btn = $('<a>').text('[ Usuń ]').addClass('delete_product')
-        li.append(' ', delete_btn)
+        var delete_product = $('<a>').text('[ Usuń ]').addClass('delete_product')
+        var edit_product = $('<a>').text('[ Edytuj ]').addClass('edit_product')
+        li.append(' ', edit_product,' ', delete_product )
         ctnProductsList.append(li);
     };
 }
@@ -157,16 +158,19 @@ $(function() {
     });
 //        // Usuwanie pojedyńczego produktu
 //    console.log($('.delete_product'))
-        $('body').on("click", $('.delete_product'), function(event){
+        $('body').on("click", '.delete_product', function(event){
 //            console.log(event)
             // łapię kliknięty element
             var x = $(event.target);
             // łapię rodzica klikniętego elementu i jego id
             var productId = x.parent().attr('data-id');
-//            console.log(productId) // sanity check
-            if (productId !== undefined){
+
+            if (productId !== undefined && confirm("Serio? Do kosza? Zastanów się dobrze!")){
                 deleteProduct(productId)
             }
+
+//            console.log(productId) // sanity check
+
         })
 
 });

@@ -23,7 +23,7 @@
     cursor: pointer;
 }
 
-.delete_product {
+.delete_product, .edit_product {
     cursor: pointer;
     display: inline-block;
 
@@ -31,4 +31,8 @@
 
 .delete_product:hover {
     color: red;
+}
+
+.edit_product:hover {
+    color: blue;
 }
