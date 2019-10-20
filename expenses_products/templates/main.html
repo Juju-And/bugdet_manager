@@ -37,6 +37,31 @@
             <!--Load list of products here-->
         </ul>
     </div>
+        <li>
+        <h2 id="add-expense">Dodaj nowy wydatek</h2></li>
+        <div id="add-expense-form" class="hidden">
+            <form action="/create_post/" id="post-expense-form" method="post">
+                {% csrf_token %}
+<!--                <form action="/create_post/" method="POST" id="post-form">-->
+                <fieldset>
+                    <legend>Wybierz produkt, który chcesz dodać</legend>
+                    <p>
+<!--                        <label>Select list</label>-->
+                        <select id="dropdown-products">
+                            <option value="/">...</option>
+                        </select>
+                          Ilość (od 1 do 5):
+                          <input type="number" name="quantity" min="1" max="5", value="1">
+
+                        <button id="add-next-product">Dodaj kolejny [nie klikać - zjebane]</button>
+                    </p>
+                </fieldset>
+                <input type="submit" value="Zapisz">
+            </form>
+
+        </div>
+    </li>
+
     <li>
         <h2 id="show-all-expenses">Pokaż wszystkie wydatki</h2></li>
     <div id="list-of-expenses" class="hidden">

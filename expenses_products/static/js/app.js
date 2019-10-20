@@ -1,8 +1,10 @@
 var productsList = $('#list-of-products');
 var ctnProductsList = $('#content-list-product')
+var dropdownProducts = $('#dropdown-products')
 var expensesList = $('#list-of-expenses');
 var ctnExpensesList = $('#content-list-expenses');
 var addProductForm = $('#add-product-form');
+var addExpenseForm = $('#add-expense-form');
 
 function insertContentProducts(products) {
     ctnProductsList.empty()
@@ -12,6 +14,15 @@ function insertContentProducts(products) {
         var edit_product = $('<a>').text('[ Edytuj ]').addClass('edit_product')
         li.append(' ', edit_product,' ', delete_product )
         ctnProductsList.append(li);
+    };
+}
+
+// lista produktów do dropdownu
+function insertProductsDropdown(products) {
+       ctnProductsList.empty()
+       for(var i = 0 ; i < products.length; i++) {
+       var option = $('<option value=' + products[i].id + '>').text(products[i].name + ", Cena: " + products[i].price);
+       dropdownProducts.append(option);
     };
 }
 
@@ -32,6 +43,19 @@ function loadProducts(name) {
         });
 }
 
+function loadDropdown() {
+        var url = "products/"
+        $.ajax({
+            url: url,
+            data: {},
+            type: "GET",
+            dataType: "json"
+        }).done(function(response) {
+        insertProductsDropdown(response);
+        }).fail(function(xhr,status,err) {
+        }).always(function(xhr,status) {
+        });
+}
 
 
 function insertContentExpenses(expenses) {
@@ -61,12 +85,9 @@ function loadExpenses() {
         });
 }
 
-//function addNewProduct(){
-//
-//}
 function saveProduct() {
-    console.log("create post is working!") // sanity check
-    console.log($('#product-name').val())
+//    console.log("create post is working!") // sanity check
+//    console.log($('#product-name').val())
 
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -84,6 +105,7 @@ function saveProduct() {
         }).done(function(response) {
         // po wykonaniu należy odświeżyć listę produktów, inaczej trzeba przeładować całą stronę
             loadProducts()
+            loadDropdown()
         }).fail(function(xhr,status,err) {
         }).always(function(xhr,status) {
         });
@@ -102,6 +124,7 @@ function deleteProduct (productId) {
             dataType: "json"
         }).done(function(response) {
             loadProducts()
+            loadDropdown()
         }).fail(function(xhr,status,err) {
         }).always(function(xhr,status) {
         });
@@ -113,6 +136,7 @@ function deleteProduct (productId) {
 $(function() {
      console.log("dupa")
      loadProducts();
+     loadDropdown();
     $('#show-all-products').click(function() {
 //        var $this = $(this);
         if (productsList.hasClass("hidden")) {
@@ -141,12 +165,21 @@ $(function() {
       })
 
         // Pokazywanie wszystkich produktów /na klik chowanie ich
-            $('#add-product').click(function() {
+      $('#add-product').click(function() {
         if (addProductForm.hasClass("hidden")) {
            addProductForm.removeClass("hidden");
         }
         else {
             addProductForm.addClass("hidden");
+        }
+      })
+
+      $('#add-expense').click(function() {
+        if (addExpenseForm.hasClass("hidden")) {
+           addExpenseForm.removeClass("hidden");
+        }
+        else {
+            addExpenseForm.addClass("hidden");
         }
 
       })
