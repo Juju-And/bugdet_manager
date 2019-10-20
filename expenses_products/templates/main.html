@@ -1,25 +1,37 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Budget manager</title>
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <body>
-    <h1>Budget manager</h1>
-    <ul style="list-style-type:none;">
-        <li id="show-all-products"><h2>Pokaż wszystkie produkty</h2></li>
+<h1 id="page-title">Budget manager</h1>
+<ul class="main_ul">
+    <li>
+        <h2 id="show-all-products">Pokaż wszystkie produkty</h2></li>
+    <div id="list-of-products" class="hidden">
 
-             <ul id="list-of-products">
+        <!--Filter products by name/part of name-->
+        <input id="input-show-products" type="text">
+        <input id="btn-show-products" class="input-button" type="submit" value="Szukaj">
+
+        <br><br>
+
+        <ul id="content-list-product">
             <!--Load list of products here-->
-            </ul>
-
-        <li id="show-all-expenses"><h2>Pokaż wszystkie wydatki</h2></li>
-            <ul id="list-of-expenses">
+        </ul>
+    </div>
+    <li>
+        <h2 id="show-all-expenses">Pokaż wszystkie wydatki</h2></li>
+    <div id="list-of-expenses" class="hidden">
+        <ul id="content-list-expenses">
             <!--Load list of expenses here-->
-            </ul>
-    </ul>
-    {% load static %}
-    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'js/app.js' %}"></script>
+        </ul>
+    </div>
+</ul>
+<!--    {% load static %}-->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

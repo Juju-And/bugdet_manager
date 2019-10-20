@@ -51,7 +51,12 @@ def show_db(request):
 class ShowProducts(View):
     @csrf_exempt
     def get(self, request):
-        products = list(Product.objects.all().values())
+        if request.GET.get('name'):
+            name = request.GET.get('name')
+            # print(name)
+            products = list(Product.objects.filter(name__icontains=name).values())
+        else:
+            products = list(Product.objects.all().values())
         return JsonResponse(products, safe=False)
 
     @csrf_exempt
