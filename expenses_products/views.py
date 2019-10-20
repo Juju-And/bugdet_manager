@@ -2,6 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 import json
 from expenses_products.models import Product, Expenses, ExpenseProduct
 from django.core.exceptions import ObjectDoesNotExist
@@ -49,7 +50,6 @@ def show_db(request):
 
 
 class ShowProducts(View):
-    @csrf_exempt
     def get(self, request):
         if request.GET.get('name'):
             name = request.GET.get('name')
@@ -61,18 +61,13 @@ class ShowProducts(View):
 
     @csrf_exempt
     def post(self, request):
-        # data = json.loads(request.body)
-        # data = {
-        #     'name': request.GET.get('name'),
-        #     'price': request.GET.get('price')
-        # }
+        # print(request.body)
+        data = json.loads(request.body)
         # print(data)
-        # name = data['name']
-        name = request.GET.get('name')
-        # price = data['price']
-        price =  request.GET.get('price')
-        product = Product.objects.create(name=name, price=price)
-        return JsonResponse({"Message": "{} was added".format(product)})
+        name = data['name']
+        price = data['price']
+        Product.objects.create(name=name, price=price)
+        return JsonResponse({"Message": "{} was added"})
 
 
 class ProductId(View):

@@ -11,13 +11,14 @@
     <li>
         <h2 id="add-product">Dodaj nowy produkt</h2></li>
         <div id="add-product-form" class="hidden">
-            <form action="" method="post">
+            <form action="/create_post/" id="post-product-form" method="post">
+                {% csrf_token %}
+<!--                <form action="/create_post/" method="POST" id="post-form">-->
                 <label>Nazwa produktu:</label>
-                <input type="text" name="product-name">
+                <input type="text" id="product-name">
                 <label>Cena:</label>
-                <input type="number" step="0.01" name="product-price">
+                <input type="number" step="0.01" id="product-price">
                 <input type="submit" value="Zapisz">
-            {% csrf_token %}
             </form>
 
         </div>

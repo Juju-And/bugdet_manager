@@ -63,19 +63,30 @@ function loadExpenses() {
 //function addNewProduct(){
 //
 //}
-//
-//function saveProduct() {
-//        $.ajax({
-//            url: "products/",
-//            data: {},
-//            type: "POST",
-//            dataType: "json"
-//        }).done(function(response) {
-//        addNewProduct(response);
-//        }).fail(function(xhr,status,err) {
-//        }).always(function(xhr,status) {
-//        });
-//}
+function saveProduct() {
+    console.log("create post is working!") // sanity check
+    console.log($('#product-name').val())
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+        $.ajax({
+            url: "products/",
+            headers:{
+            "X-CSRFToken": csrftoken
+            },
+            data: JSON.stringify({
+                "name": $('#product-name').val(),
+                "price": $('#product-price').val(),
+            }),
+            type: "POST",
+            dataType: "json"
+        }).done(function(response) {
+        // po wykonaniu należy odświeżyć listę produktów, inaczej trzeba przeładować całą stronę
+            loadProducts()
+        }).fail(function(xhr,status,err) {
+        }).always(function(xhr,status) {
+        });
+}
 
 
 /* Po załadowaniu dokumentu wywołuje się funkcja zawierająca reakcje i funkcje*/
@@ -119,4 +130,11 @@ $(function() {
         }
 
       })
+
+          $('#post-product-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!")  // sanity check
+        saveProduct();
+
+});
 });
