@@ -9,6 +9,20 @@
 <h1 id="page-title">Budget manager</h1>
 <ul class="main_ul">
     <li>
+        <h2 id="add-product">Dodaj nowy produkt</h2></li>
+        <div id="add-product-form" class="hidden">
+            <form action="" method="post">
+                <label>Nazwa produktu:</label>
+                <input type="text" name="product-name">
+                <label>Cena:</label>
+                <input type="number" step="0.01" name="product-price">
+                <input type="submit" value="Zapisz">
+            {% csrf_token %}
+            </form>
+
+        </div>
+    </li>
+    <li>
         <h2 id="show-all-products">Pokaż wszystkie produkty</h2></li>
     <div id="list-of-products" class="hidden">
 
@@ -31,6 +45,7 @@
     </div>
 </ul>
 <!--    {% load static %}-->
+
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/app.js' %}"></script>
 </body>

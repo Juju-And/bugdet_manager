@@ -22,3 +22,11 @@
 .input-button {
     cursor: pointer;
 }
+
+.delete_btn {
+    cursor: pointer;
+}
+
+.delete_btn:hover {
+    color: red;
+}

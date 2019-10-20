@@ -16,5 +16,5 @@ class Expenses(models.Model):
 class ExpenseProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     expense = models.ForeignKey(Expenses, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=1)
 

@@ -2,11 +2,14 @@ var productsList = $('#list-of-products');
 var ctnProductsList = $('#content-list-product')
 var expensesList = $('#list-of-expenses');
 var ctnExpensesList = $('#content-list-expenses');
+var addProductForm = $('#add-product-form');
 
 function insertContentProducts(products) {
     ctnProductsList.empty()
     for(var i = 0 ; i < products.length; i++) {
         var li = $('<li>').text('Nazwa: ' + products[i].name + ", Cena: " + products[i].price);
+        var delete_btn = $('<a>').text('[ Usuń ]').addClass('delete_btn')
+        li.append(' ', delete_btn)
         ctnProductsList.append(li);
     };
 }
@@ -55,7 +58,24 @@ function loadExpenses() {
         }).fail(function(xhr,status,err) {
         }).always(function(xhr,status) {
         });
-    }
+}
+
+//function addNewProduct(){
+//
+//}
+//
+//function saveProduct() {
+//        $.ajax({
+//            url: "products/",
+//            data: {},
+//            type: "POST",
+//            dataType: "json"
+//        }).done(function(response) {
+//        addNewProduct(response);
+//        }).fail(function(xhr,status,err) {
+//        }).always(function(xhr,status) {
+//        });
+//}
 
 
 /* Po załadowaniu dokumentu wywołuje się funkcja zawierająca reakcje i funkcje*/
@@ -86,6 +106,16 @@ $(function() {
         }
         else {
             expensesList.addClass("hidden");
+        }
+
+      })
+
+            $('#add-product').click(function() {
+        if (addProductForm.hasClass("hidden")) {
+           addProductForm.removeClass("hidden");
+        }
+        else {
+            addProductForm.addClass("hidden");
         }
 
       })
