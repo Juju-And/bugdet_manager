@@ -7,8 +7,8 @@ var addProductForm = $('#add-product-form');
 function insertContentProducts(products) {
     ctnProductsList.empty()
     for(var i = 0 ; i < products.length; i++) {
-        var li = $('<li>').text('Nazwa: ' + products[i].name + ", Cena: " + products[i].price);
-        var delete_btn = $('<a>').text('[ Usuń ]').addClass('delete_btn')
+        var li = $('<li data-id=' + products[i].id + '>').text('Nazwa: ' + products[i].name + ", Cena: " + products[i].price);
+        var delete_btn = $('<a>').text('[ Usuń ]').addClass('delete_product')
         li.append(' ', delete_btn)
         ctnProductsList.append(li);
     };
@@ -88,11 +88,29 @@ function saveProduct() {
         });
 }
 
+function deleteProduct (productId) {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        var url = "products/" + productId
+        $.ajax({
+            url: url,
+            headers:{
+            "X-CSRFToken": csrftoken
+            },
+            data: {},
+            type: "DELETE",
+            dataType: "json"
+        }).done(function(response) {
+            loadProducts()
+        }).fail(function(xhr,status,err) {
+        }).always(function(xhr,status) {
+        });
+}
+
 
 /* Po załadowaniu dokumentu wywołuje się funkcja zawierająca reakcje i funkcje*/
 
 $(function() {
-
+     console.log("dupa")
      loadProducts();
     $('#show-all-products').click(function() {
 //        var $this = $(this);
@@ -121,6 +139,7 @@ $(function() {
 
       })
 
+        // Pokazywanie wszystkich produktów /na klik chowanie ich
             $('#add-product').click(function() {
         if (addProductForm.hasClass("hidden")) {
            addProductForm.removeClass("hidden");
@@ -130,11 +149,24 @@ $(function() {
         }
 
       })
-
+        // Dodawanie nowego produktu
           $('#post-product-form').on('submit', function(event){
         event.preventDefault();
-        console.log("form submitted!")  // sanity check
+//        console.log("form submitted!")  // sanity check
         saveProduct();
+    });
+//        // Usuwanie pojedyńczego produktu
+//    console.log($('.delete_product'))
+        $('body').on("click", $('.delete_product'), function(event){
+//            console.log(event)
+            // łapię kliknięty element
+            var x = $(event.target);
+            // łapię rodzica klikniętego elementu i jego id
+            var productId = x.parent().attr('data-id');
+//            console.log(productId) // sanity check
+            if (productId !== undefined){
+                deleteProduct(productId)
+            }
+        })
 
-});
 });

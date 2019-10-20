@@ -23,10 +23,12 @@
     cursor: pointer;
 }
 
-.delete_btn {
+.delete_product {
     cursor: pointer;
+    display: inline-block;
+
 }
 
-.delete_btn:hover {
+.delete_product:hover {
     color: red;
 }

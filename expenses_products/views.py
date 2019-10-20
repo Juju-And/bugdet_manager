@@ -2,7 +2,6 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 import json
 from expenses_products.models import Product, Expenses, ExpenseProduct
 from django.core.exceptions import ObjectDoesNotExist
@@ -86,8 +85,15 @@ class ProductId(View):
     def put(self):
         pass
 
-    def delete(self):
-        pass
+    @csrf_exempt
+    def delete(self, request, product_id):
+        try:
+            product = Product.objects.get(id=product_id)
+            product.delete()
+            response = JsonResponse({'Message': 'Product deleted'}, safe=False)
+        except ObjectDoesNotExist:
+            response = JsonResponse({'Message': 'Invalid ID supplied'})
+        return response
 
 
 class ShowExpenses(View):
