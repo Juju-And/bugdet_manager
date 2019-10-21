@@ -21,7 +21,9 @@ function insertContentProducts(products) {
 function insertProductsDropdown(products) {
        ctnProductsList.empty()
        for(var i = 0 ; i < products.length; i++) {
-       var option = $('<option value=' + products[i].id + '>').text(products[i].name + ", Cena: " + products[i].price);
+       var option = $('<option data-id=' + products[i].id + ' '
+                + 'value=' + products[i].id +  '>').text(products[i].name + ", Cena: " + products[i].price);
+       console.l
        dropdownProducts.append(option);
     };
 }
@@ -59,6 +61,7 @@ function loadDropdown() {
 
 
 function insertContentExpenses(expenses) {
+    ctnExpensesList.empty()
     for(var i = 0 ; i < expenses.length; i++) {
         var li = $('<li>').text(expenses[i].date_added);
         for(var j = 0 ; j < expenses[i].products.length; j++){
@@ -111,6 +114,28 @@ function saveProduct() {
         });
 }
 
+function safeExpense() {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            url: "expenses/",
+            headers:{
+            "X-CSRFToken": csrftoken
+            },
+            data: JSON.stringify({
+                "product_id": $('#dropdown-products option:selected').attr('data-id'),
+                "quantity": $('#quantity-of-product').val()
+            }),
+            type: "POST",
+            dataType: "json"
+        }).done(function(response) {
+        // po wykonaniu należy odświeżyć listę expense, inaczej trzeba przeładować całą stronę
+            loadExpenses()
+        }).fail(function(xhr,status,err) {
+        }).always(function(xhr,status) {
+        });
+}
+
+
 function deleteProduct (productId) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var url = "products/" + productId
@@ -134,9 +159,10 @@ function deleteProduct (productId) {
 /* Po załadowaniu dokumentu wywołuje się funkcja zawierająca reakcje i funkcje*/
 
 $(function() {
-     console.log("dupa")
+//     console.log("dupa")
      loadProducts();
      loadDropdown();
+
     $('#show-all-products').click(function() {
 //        var $this = $(this);
         if (productsList.hasClass("hidden")) {
@@ -201,9 +227,12 @@ $(function() {
             if (productId !== undefined && confirm("Serio? Do kosza? Zastanów się dobrze!")){
                 deleteProduct(productId)
             }
-
 //            console.log(productId) // sanity check
+        })
 
+        $('#add-product-btn').click(function() {
+            event.preventDefault();
+            safeExpense();
         })
 
 });

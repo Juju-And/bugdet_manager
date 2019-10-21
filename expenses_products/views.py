@@ -111,8 +111,19 @@ class ShowExpenses(View):
 
         return JsonResponse(expenses, safe=False)
 
-    def post(self):
-        pass
+    def post(self, request):
+        print(request.body)
+        data = json.loads(request.body)
+        product_id = data['product_id']
+        quantity = int(data['quantity'])
+        expense = Expenses.objects.create()
+        product = Product.objects.get(id=product_id)
+        expense.products.add(product)
+        expense.save()
+        expenseProduct = ExpenseProduct.objects.get(expense=expense)
+        expenseProduct.quantity = quantity
+        expenseProduct.save()
+        return JsonResponse({"Message": "Expense was added"})
 
 
 class ExpenseId(View):
