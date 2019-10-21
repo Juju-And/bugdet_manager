@@ -152,7 +152,7 @@ class ExpenseId(View):
         #     pass
         #
 
-    def delete(self, expense_id):
+    def delete(self, request, expense_id):
         try:
             expense = Expenses.objects.get(id=expense_id)
             expense.delete()

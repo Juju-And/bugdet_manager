@@ -23,16 +23,17 @@
     cursor: pointer;
 }
 
-.delete_product, .edit_product {
+.delete_product, .edit_product, .delete_expense, .edit_expense {
     cursor: pointer;
     display: inline-block;
 
 }
 
-.delete_product:hover {
+.delete_product:hover, .delete_expense:hover  {
     color: red;
 }
 
-.edit_product:hover {
+.edit_product:hover, .edit_expense:hover  {
     color: blue;
 }
+

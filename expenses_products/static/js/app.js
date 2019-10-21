@@ -63,7 +63,7 @@ function loadDropdown() {
 function insertContentExpenses(expenses) {
     ctnExpensesList.empty()
     for(var i = 0 ; i < expenses.length; i++) {
-        var li = $('<li>').text(expenses[i].date_added);
+        var li = $('<li data-id=' + expenses[i].id + '>').text(expenses[i].date_added);
         for(var j = 0 ; j < expenses[i].products.length; j++){
             var productsOfExpense = expenses[i].products[j];
 //            console.log(typeof productsOfExpense)
@@ -71,6 +71,10 @@ function insertContentExpenses(expenses) {
                         + ', ' + productsOfExpense['name']);
             li.append(h4);
         }
+        var delete_expense = $('<a>').text('[ Usuń ]').addClass('delete_expense')
+        var edit_expense = $('<a>').text('[ Edytuj ]').addClass('edit_expense')
+
+        li.append(delete_expense, ' ', edit_expense, '<br>', '<br>')
         ctnExpensesList.append(li);
     };
 }
@@ -155,6 +159,23 @@ function deleteProduct (productId) {
         });
 }
 
+function deleteExpense (expenseId) {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        var url = "expenses/" + expenseId
+        $.ajax({
+            url: url,
+            headers:{
+            "X-CSRFToken": csrftoken
+            },
+            data: {},
+            type: "DELETE",
+            dataType: "json"
+        }).done(function(response) {
+            loadExpenses()
+        }).fail(function(xhr,status,err) {
+        }).always(function(xhr,status) {
+        });
+}
 
 /* Po załadowaniu dokumentu wywołuje się funkcja zawierająca reakcje i funkcje*/
 
@@ -233,6 +254,19 @@ $(function() {
         $('#add-product-btn').click(function() {
             event.preventDefault();
             safeExpense();
+        })
+
+        //        // Usuwanie pojedyńczego wydatku
+        $('body').on("click", '.delete_expense', function(event){
+            // łapię kliknięty element
+            var x = $(event.target);
+            // łapię rodzica klikniętego elementu i jego id
+            var expenseId = x.parent().attr('data-id');
+
+            if (expenseId !== undefined && confirm("Serio? Usuwanie wydatków nie zwróci Ci hajsików!")){
+                deleteExpense(expenseId)
+            }
+//            console.log(productId) // sanity check
         })
 
 });
