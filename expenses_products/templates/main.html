@@ -25,8 +25,10 @@
     </li>
     <li>
         <h2 id="show-all-products">Pokaż wszystkie produkty</h2></li>
-    <div id="list-of-products" class="hidden">
 
+    <div id="list-of-products" class="hidden">
+    <fieldset>
+        <legend>Wpisz nazwę szukanego produktu</legend>
         <!--Filter products by name/part of name-->
         <input id="input-show-products" type="text">
         <input id="btn-show-products" class="input-button" type="submit" value="Szukaj">
@@ -36,7 +38,25 @@
         <ul id="content-list-product">
             <!--Load list of products here-->
         </ul>
+        <div class="form-popup-product">
+          <form action="" class="form-container">
+            <h2 id="edit-title">Edytujesz produkt</h2>
+
+            <label><b>Nazwa produktu:</b></label>
+              <br>
+            <input id="edit-product-name" type="text" required>
+              <br>
+            <label><b>Cena:</b></label>
+              <br>
+            <input id="edit-product-price" type="number" required>
+            <br><br>
+            <button id="save-edited-btn" type="submit" class="btn">Zapisz zmiany</button>
+          </form>
+        </div>
+
+    </fieldset>
     </div>
+
         <li>
         <h2 id="add-expense">Dodaj nowy wydatek</h2></li>
         <div id="add-expense-form" class="hidden">

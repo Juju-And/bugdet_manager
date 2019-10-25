@@ -82,9 +82,6 @@ class ProductId(View):
             response = JsonResponse({'Message': 'Invalid ID supplied'})
         return response
 
-    def put(self):
-        pass
-
     @csrf_exempt
     def delete(self, request, product_id):
         try:
@@ -93,6 +90,21 @@ class ProductId(View):
             response = JsonResponse({'Message': 'Product deleted'}, safe=False)
         except ObjectDoesNotExist:
             response = JsonResponse({'Message': 'Invalid ID supplied'})
+        return response
+
+    def put(self, request, product_id):
+        data = json.loads(request.body)
+        # print(data)
+        new_Name = data['new_Name']
+        new_Price = data['new_Price']
+
+        product = Product.objects.get(id=product_id)
+        print(product.name)
+        product.name = new_Name
+        product.save()
+        product.price = new_Price
+        product.save()
+        response = JsonResponse({'Message': 'Product was changed'})
         return response
 
 

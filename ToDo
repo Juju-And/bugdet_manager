@@ -1,0 +1,13 @@
+ToDO
+
+- Edytowanie expense
+- Dodawanie większej ilości produktów do jednego expense
+- Liczenie sumy jednego wydatku
+- 2 opcje sortowania wg daty lub wg całkowitej sumy wydatku
+- podział kodu na 2 pliki .js : 1. dotyczące produktu, 2. dotyczące expensu
+
+- Zapisywanie listy wydatków do pliku
+- logowanie
+
+done
+- Edytowanie produktów

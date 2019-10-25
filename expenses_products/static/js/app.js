@@ -9,7 +9,9 @@ var addExpenseForm = $('#add-expense-form');
 function insertContentProducts(products) {
     ctnProductsList.empty()
     for(var i = 0 ; i < products.length; i++) {
-        var li = $('<li data-id=' + products[i].id + '>').text('Nazwa: ' + products[i].name + ", Cena: " + products[i].price);
+        var li = $('<li data-id=' + products[i].id + ' ' + 'data-name=' + products[i].name + ' '
+                  + 'data-price=' + products[i].price
+                  + ' ' + '>').text('Nazwa: ' + products[i].name + ", Cena: " + products[i].price);
         var delete_product = $('<a>').text('[ Usuń ]').addClass('delete_product')
         var edit_product = $('<a>').text('[ Edytuj ]').addClass('edit_product')
         li.append(' ', edit_product,' ', delete_product )
@@ -118,6 +120,38 @@ function saveProduct() {
         });
 }
 
+function editProduct(product_Id, new_Name, new_Price) {
+    console.log("edit product is working!") // sanity check
+    console.log($('#edit-product-name').val())
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    var url = "products/"
+        if (product_Id !== undefined){
+           url = "products/" + product_Id
+        }
+
+        $.ajax({
+            url: url,
+            headers:{
+            "X-CSRFToken": csrftoken
+            },
+            data: JSON.stringify({
+                "product_Id": product_Id,
+                "new_Name": new_Name,
+                "new_Price": new_Price,
+            }),
+            type: "PUT",
+            dataType: "json"
+        }).done(function(response) {
+        // po wykonaniu należy odświeżyć listę produktów, inaczej trzeba przeładować całą stronę
+            loadProducts()
+            loadDropdown()
+        }).fail(function(xhr,status,err) {
+        }).always(function(xhr,status) {
+        });
+}
+
+
 function safeExpense() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         $.ajax({
@@ -177,6 +211,16 @@ function deleteExpense (expenseId) {
         });
 }
 
+function getProductId() {
+  var total = new Array();
+  $("input[type=checkbox]:checked").each(function() {
+    total.push($(this).val());
+  });
+  return total;
+};
+
+
+
 /* Po załadowaniu dokumentu wywołuje się funkcja zawierająca reakcje i funkcje*/
 
 $(function() {
@@ -220,7 +264,7 @@ $(function() {
             addProductForm.addClass("hidden");
         }
       })
-
+        // Pokazywanie wszystkich expenses /na klik chowanie ich
       $('#add-expense').click(function() {
         if (addExpenseForm.hasClass("hidden")) {
            addExpenseForm.removeClass("hidden");
@@ -239,7 +283,7 @@ $(function() {
 //        // Usuwanie pojedyńczego produktu
 //    console.log($('.delete_product'))
         $('body').on("click", '.delete_product', function(event){
-//            console.log(event)
+//            console.log('dupa')
             // łapię kliknięty element
             var x = $(event.target);
             // łapię rodzica klikniętego elementu i jego id
@@ -256,6 +300,7 @@ $(function() {
             safeExpense();
         })
 
+
         //        // Usuwanie pojedyńczego wydatku
         $('body').on("click", '.delete_expense', function(event){
             // łapię kliknięty element
@@ -268,5 +313,41 @@ $(function() {
             }
 //            console.log(productId) // sanity check
         })
+
+
+
+        // Edytowanie produktu -popup form
+        $('body').on("click", '.edit_product', function(event){
+            event.preventDefault();
+            // łapię kliknięty element
+            var x = $(event.target)
+            $('.form-popup-product').css({'display': 'inline-block'});
+            $('.form-popup-product').attr('id', x.parent().attr('data-id'));
+            $('#edit-product-name').val(x.parent().attr('data-name'));
+            $('#edit-product-price').val(x.parent().attr('data-price'));
+            productttId = x.parent().attr('data-id'); // sanity check
+            console.log(productttId) // sanity check
+            // złapanie nowej nazwy i ceny i wywołanie funkcji aktualizującej
+
+//            $(document).keyup(function(e) {
+//              if (e.keyCode === 13) $('.save').click();     // enter
+//              if (e.keyCode === 27) $('.cancel').click();   // esc
+//            });
+        })
+
+          $('.form-popup-product').on('submit', function(event){
+            event.preventDefault();
+            product_Id = $('.form-popup-product').attr("id")
+            new_Name = $('#edit-product-name').val();
+            new_Price = $('#edit-product-price').val();
+
+//            console.log(product_Id, new_Name, new_Price)
+//          console.log("form submitted!")  // sanity check
+            editProduct(product_Id, new_Name, new_Price);
+            $('.form-popup-product').css({'display': 'none'});
+
+            });
+
+
 
 });

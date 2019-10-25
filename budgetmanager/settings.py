@@ -123,3 +123,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     '/expenses_products/static/',
 )
+
+# APPEND_SLASH = False

@@ -1,3 +1,8 @@
+body {
+    margin-left: 0;
+}
+
+
 #page-title {
     text-align:center;
 }
@@ -37,3 +42,22 @@
     color: blue;
 }
 
+#edit-title {
+
+}
+
+
+.form-popup-product {
+    text-align:center;
+      display: none;
+      border-left: 5px solid #0066ff;
+      background: #99c2ff;
+      position: fixed;
+      padding: 10%;
+      top: 50%;
+      left: 50%;
+      opacity: .9;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      z-index: 9;
+}
