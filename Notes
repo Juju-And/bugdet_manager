@@ -1,0 +1,36 @@
+ToDO
+
+- Edytowanie expense
+- Dodawanie większej ilości produktów do jednego expense
+- Liczenie sumy jednego wydatku
+- 2 opcje sortowania wg daty lub wg całkowitej sumy wydatku
+- podział kodu na 2 pliki .js : 1. dotyczące produktu, 2. dotyczące expensu
+
+- Zapisywanie listy wydatków do pliku
+- logowanie
+
+done
+- Edytowanie produktów
+
+
+# bugdet_manager
+
+
+Aplikacja bedzie kontrolowala miesieczne wydatki na kosmetyki/środki higieny.
+
+- Strona z lista produktów - Możliwość dodawania i usuwania produktów
+
+- Strona z listą wydatków - Możliwość pobierania wydatków i dodawania wydatków,
+filtrowanie po dacie, cenie
+
+1. Zrób modele takie jak: Product, Expense. Mają one zawierać informacje o cenie produktu,
+nazwa, data itp itd
+
+2. Należy zaprojektować JSON API przy pomocy swaggera https://editor.swagger.io/
+
+3. Nastepnie nalezy przedstawić te endpointy przy pomocy Django (W widoku użyjesz po prostu
+JSONResponse zamiast HTTPResponse)
+
+4. Będziesz musiała napisać frontend który będzie pobierał dane z API i je wyświetlał,
+wysyłał dane do API itp itd
+

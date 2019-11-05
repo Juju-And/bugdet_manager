@@ -1,21 +1,33 @@
-# bugdet_manager
+# Budget Manager
 
+This is a web application using Django, which thanks to AJAX communicates with browser.
+App allows user to manipulate with budget data such as: product and it's price and expenses.
 
-Aplikacja bedzie kontrolowala miesieczne wydatki na kosmetyki/środki higieny.
+## Getting started
 
-- Strona z lista produktów - Możliwość dodawania i usuwania produktów
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-- Strona z listą wydatków - Możliwość pobierania wydatków i dodawania wydatków, 
-filtrowanie po dacie, cenie
+### Prerequisites
 
-1. Zrób modele takie jak: Product, Expense. Mają one zawierać informacje o cenie produktu, 
-nazwa, data itp itd
+Install all required modules running pip with the provided file:
 
-2. Należy zaprojektować JSON API przy pomocy swaggera https://editor.swagger.io/
+```
+pip install -r requirements.txt
+```
 
-3. Nastepnie nalezy przedstawić te endpointy przy pomocy Django (W widoku użyjesz po prostu 
-JSONResponse zamiast HTTPResponse)
+### Installing
 
-4. Będziesz musiała napisać frontend który będzie pobierał dane z API i je wyświetlał,
-wysyłał dane do API itp itd
+As a first step upgrade SQLite database, by:
 
+```
+$ python manage.py migrate
+```
+
+In order to run the application the command should be typed:
+
+```
+$ python manage.py runserver
+```
+
+All interaction happens in the browser. User can create and modify products and prices, add and delete expenses.
+Data will be saved in the database.

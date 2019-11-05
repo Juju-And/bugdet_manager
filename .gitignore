@@ -97,3 +97,5 @@ ENV/
 
 # SQLite
 *.db
+
+.Notes
